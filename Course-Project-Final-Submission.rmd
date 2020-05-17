@@ -3,7 +3,7 @@ title: "Practical Machine Learning Course Project"
 output: html_document
 ---
   
-  ```{r}
+```{r}
 library(caret)
 library(rpart)
 library(randomForest)
@@ -137,7 +137,7 @@ Now, We will predict on testing data and observe the output
 DT_prediction<- predict(DT_model, testing)
 confusionMatrix(table(DT_prediction, testing$classe))
 ```
-From the Decision Tree Model we get the prediction accuracy is 57% which is not upto satisfactory level.   
+From the Decision Tree Model we get the prediction accuracy is 49% which is not upto satisfactory level.   
 
 So we will apply another method
 
@@ -146,28 +146,35 @@ So we will apply another method
 ```{r}
 #Fit the model   
 RF_model<- train(classe ~. , data=training, method= "rf", ntree=100)
+
 ```
+
+```{r}
+RF_prediction<- predict(RF_model, training)
+RF_cm<-confusionMatrix(table(RF_prediction, training$classe))
+RF_cm
+```
+We get a 100% accuracy, which is the best level of accuracy.   
+
+now we will predict on testing data.
 
 ```{r}
 #Prediction  
 RF_prediction<- predict(RF_model, testing)
-
-```
-
-```{r}
 RF_cm<-confusionMatrix(table(RF_prediction, testing$classe))
 RF_cm
 ```
 
-From Random Forest we get 98.9% (~99%) accuracy which is close to perfect accuracy level.
+From Random Forest we get 99.2% accuracy which is close to perfect accuracy level.
 
 # Conclusion
 
 we conclude that, Random Forest is accurate than Decision Tree and get upto 99% of accuracy level.   
 
-Now, We will test on "test_data" 
+Now, We will test on "test_data" which is "Out of Sample"
 
 ```{r}
 prediction_test<- predict(RF_model, test_data)
 prediction_test
+
 ```
